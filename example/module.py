@@ -1,5 +1,7 @@
 from modules.module import Module
 import logging
+import argparse
+
 
 class Test(Module):
     name = "Test"
@@ -10,5 +12,8 @@ class Test(Module):
     def initialize(self, options: dict):
         self.arguments = options
 
-        if options["test"]:
-            logging.info("Test module enabled!")
+        if options[self.optname]:
+            logging.info(f"{self.name} module enabled!")
+
+    def options(self, parser: argparse.ArgumentParser):
+        parser.add_argument("-t", "--test1", action="store_true")
