@@ -1,5 +1,7 @@
-import argparse
 import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+from core import banner
+import argparse
 from colorama import init, Fore
 from modules import *
 
@@ -19,11 +21,14 @@ parser = argparse.ArgumentParser(
 
 # Framework options
 f_group = parser.add_argument_group("Framework", "Options for framework")
-f_group.add_argument("-v", "--version", help="Shows framework version", action="count")
+f_group.add_argument("-v", "--version", help="Shows framework version", action="store_true")
 
 modules = [module(parser) for module in module.Module.__subclasses__()]
 args = parser.parse_args()
 
+if args.version:
+    exit(banner.banner())
+
 for module_ in modules:
-    if vars(args)[module_.optname] == True:
+    if vars(args)[module_.optname]:
         module_.initialize(vars(args))
