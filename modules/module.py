@@ -11,9 +11,9 @@ class Module:
     def __init__(self, parser: argparse.ArgumentParser):
         self.arguments = {}
 
-        module_group = parser.add_argument_group(self.name, self.desc)
-        module_group.add_argument(f"--{self.optname}", action="store_true", help=f"Load module {self.name}")
-        self.options(module_group)
+        self.module_group = parser.add_argument_group(self.name, self.desc)
+        self.module_group.add_argument(f"--{self.optname}", action="store_true", help=f"Load module {self.name}")
+        self.options(self.module_group)
 
     def initialize(self, options: dict):
         '''Called when module is enabled'''
