@@ -9,7 +9,7 @@ init()
 logging.addLevelName(logging.INFO, f"{Fore.LIGHTGREEN_EX}[+]{Fore.RESET}")
 logging.addLevelName(logging.DEBUG, f"{Fore.LIGHTCYAN_EX}[*]{Fore.RESET}")
 logging.addLevelName(logging.WARNING, f"{Fore.YELLOW}[!]{Fore.RESET}")
-logging.addLevelName(logging.CRITICAL, f"{Fore.RED}[!!]{Fore.RESET}")
+logging.addLevelName(logging.CRITICAL, f"{Fore.RED}[!]{Fore.RESET}")
 logging.basicConfig(format=f"{Fore.LIGHTBLACK_EX}[%(asctime)s]%(levelname)s%(message)s",
                     datefmt="%H:%M:%S",
                     level=logging.DEBUG
