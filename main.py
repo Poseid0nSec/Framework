@@ -1,34 +1,29 @@
-import logging
-logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
-from core import banner
 import argparse
-from colorama import init, Fore
+from core import config
 from modules import *
 
-init()
-logging.addLevelName(logging.INFO, f"{Fore.LIGHTGREEN_EX}[+]{Fore.RESET}")
-logging.addLevelName(logging.DEBUG, f"{Fore.LIGHTCYAN_EX}[*]{Fore.RESET}")
-logging.addLevelName(logging.WARNING, f"{Fore.YELLOW}[!]{Fore.RESET}")
-logging.addLevelName(logging.CRITICAL, f"{Fore.RED}[!]{Fore.RESET}")
-logging.basicConfig(format=f"{Fore.LIGHTBLACK_EX}[%(asctime)s]%(levelname)s%(message)s",
-                    datefmt="%H:%M:%S",
-                    level=logging.DEBUG
-                    )
+config.config_logging()
+
 
 parser = argparse.ArgumentParser(
-    description="Pentest Framework v1.0.0"
+    description=f"Pentest Framework v{config.version}",
+    usage="framework.py [modules] [options]"
 )
 
 # Framework options
 f_group = parser.add_argument_group("Framework", "Options for framework")
-f_group.add_argument("-v", "--version", help="Shows framework version", action="store_true")
+config.set_options(f_group)
 
-modules = [module(parser) for module in module.Module.__subclasses__()]
+# Load modules
+modules = [module_(parser) for module_ in module.Module.__subclasses__()]
+
+# Get arguments
 args = parser.parse_args()
 
-if args.version:
-    exit(banner.banner())
+# Handle arguments
+config.handle_options(vars(args))
 
+# Run selected modules
 for module_ in modules:
     if vars(args)[module_.optname]:
         module_.initialize(vars(args))
